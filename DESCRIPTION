@@ -1,0 +1,17 @@
+Package: makilab
+Title: Templates for Use in the Maki Lab
+Version: 0.0.0.9000
+Authors@R:
+    person(given = "Jay",
+           family = "Van Doorn",
+           role = c("aut", "cre"),
+           email = "jvando3@uic.edu",
+           comment = c(ORCID = "0000-0002-6353-0768"))
+Description: A collection of helpful functions for the use of projects and testing specific to the lab of Pauline Maki at the Unversity of Illinois, Chicago. Includes useful MS Excel exports, raw data parsing, and cognitive test grading.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports:
+    magrittr
