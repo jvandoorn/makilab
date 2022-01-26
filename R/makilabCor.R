@@ -15,6 +15,7 @@
 #'            x = c("Sepal.Width", "Sepal.Length"),
 #'            y = c("Petal.Width", "Petal.Length", "Species"),
 #'            excel_export = TRUE) # Exports to excel
+#' @export
 makilabCor <- function(df,x,y,excel_export=FALSE){
   if(!is.data.frame(df))
     stop("You must provide a data frame.")

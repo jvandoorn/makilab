@@ -11,6 +11,7 @@
 #' m2 <- lm(Sepal.Length~Petal.Length+Petal.Width, data = iris)
 #' m3 <- lm(Sepal.Length~Petal.Length+Petal.Width+Species, data = iris)
 #' makilabReg(m1, m2, m3, excel_export = TRUE)
+#' @export
 
 makilabReg <- function(m1, ... ,excel_export=FALSE){
   models <- list(m1, ...)
