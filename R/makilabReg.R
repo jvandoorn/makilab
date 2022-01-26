@@ -14,7 +14,7 @@
 
 makilabReg <- function(m1, ... ,excel_export=FALSE){
   models <- list(m1, ...)
-  for(i in seq_len(models)){
+  for(i in 1:length(models)){
     if(!is(models[[i]],"lm"))
       stop("You must provide lm objects.")
   }
@@ -25,7 +25,7 @@ makilabReg <- function(m1, ... ,excel_export=FALSE){
   names(lm.df) <- columns
 
   ## Get variables
-  for(i in seq_len(models)){
+  for(i in 1:length(models)){
     vars <- all.vars(models[[i]]$terms)
     model.form <- deparse(formula(models[[i]]$terms))
     yy <- rep("", length(vars)-1)

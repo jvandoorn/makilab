@@ -24,6 +24,11 @@ Creates and exports a correlation matrix in a style consistent with the Maki Lab
 \examples{
 data(iris)
 library(makilab)
-makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species")) # No export
-makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species"), excel_export = TRUE) # Exports to excel in your working directory called Data_todays date.xlsx
+makilabCor(df = iris,
+           x = c("Sepal.Width", "Sepal.Length"),
+           y = c("Petal.Width", "Petal.Length", "Species")) # No export
+makilabCor(df = iris,
+           x = c("Sepal.Width", "Sepal.Length"),
+           y = c("Petal.Width", "Petal.Length", "Species"),
+           excel_export = TRUE) # Exports to excel
 }

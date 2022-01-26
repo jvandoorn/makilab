@@ -8,8 +8,13 @@
 #' @examples
 #' data(iris)
 #' library(makilab)
-#' makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species")) # No export
-#' makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species"), excel_export = TRUE) # Exports to excel in your working directory called Data_todays date.xlsx
+#' makilabCor(df = iris,
+#'            x = c("Sepal.Width", "Sepal.Length"),
+#'            y = c("Petal.Width", "Petal.Length", "Species")) # No export
+#' makilabCor(df = iris,
+#'            x = c("Sepal.Width", "Sepal.Length"),
+#'            y = c("Petal.Width", "Petal.Length", "Species"),
+#'            excel_export = TRUE) # Exports to excel
 makilabCor <- function(df,x,y,excel_export=FALSE){
   if(!is.data.frame(df))
     stop("You must provide a data frame.")
@@ -25,11 +30,11 @@ makilabCor <- function(df,x,y,excel_export=FALSE){
   names(corr.df) <- columns
 
   ## Run correlations
-  for(i in seq_len(x)){
+  for(i in 1:length(x)){
     corr <- rep(0, length(y))
     pval <- corr
     yy <- rep("", length(y))
-    for(j in seq_len(y)){
+    for(j in 1:length(y)){
       test <- cor.test(as.numeric(df[[x[i]]]),as.numeric(df[[y[j]]]))
       corr[j] = test$estimate
       pval[j] = test$p.value
