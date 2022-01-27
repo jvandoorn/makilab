@@ -17,6 +17,8 @@
 makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
   models <- list(m1, ...)
   listed <- FALSE
+  if (length(models) < 1)
+    stop("Not enough arguments.")
   for (i in 1:length(models)) {
     if (!is(models[[i]], "lm") && !is(models[[i]], "list"))
       stop("You must provide lm objects.")
@@ -26,20 +28,22 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
       for (j in 1:length(model.list)){
         if (!is(model.list[[j]], "lm"))
           stop("Your list must be only of lm objects.")
-
       }
     }
   }
 
   ## Unnest lists
   if (listed) {
-    i <- 0
-    while (i < length(models)) {
-      i <- i + 1
-      if (!is(models[[i]], "lm")) {
-        model.list <- models[[i]]
-        models <- c(models[i-1], model.list, models[(i+1):length(models)])
-        i <- 0
+    if (length(models) == 1) {
+      models <- models[[1]]
+    } else {
+      i <- 0
+      while (i < length(models)) {
+        i <- i + 1
+        if (!is(models[[i]], "lm")) {
+          model.list <- models[[i]]
+          models <- c(models[i-1], model.list, models[(i+1):length(models)])
+        }
       }
     }
   }
