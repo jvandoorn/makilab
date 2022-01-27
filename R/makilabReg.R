@@ -1,9 +1,10 @@
 #' Creates and exports a table of heirarchical LM models.
 #'
-#' @param m1 An object output from lm().
+#' @param m1 An object output from lm() or a list of such objects.
 #' @param ... More models from lm().
 #' @param excel_export A bool for whether not you want an excel export.
-#' @return The table of model summaries and (optional) an excel sheet added to the file named 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.
+#' @param filename String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.
+#' @return The table of model summaries and (optional) an excel sheet added to the file.
 #' @examples
 #' data(iris)
 #' library(makilab)
@@ -13,11 +14,34 @@
 #' makilabReg(m1, m2, m3, excel_export = TRUE)
 #' @export
 
-makilabReg <- function(m1, ... ,excel_export=FALSE){
+makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
   models <- list(m1, ...)
-  for(i in 1:length(models)){
-    if(!is(models[[i]],"lm"))
+  listed <- FALSE
+  for (i in 1:length(models)) {
+    if (!is(models[[i]], "lm") && !is(models[[i]], "list"))
       stop("You must provide lm objects.")
+    if (is(models[[i]], "list")) {
+      model.list <- models[[i]]
+      listed <- TRUE
+      for (j in 1:length(model.list)){
+        if (!is(model.list[[j]], "lm"))
+          stop("Your list must be only of lm objects.")
+
+      }
+    }
+  }
+
+  ## Unnest lists
+  if (listed) {
+    i <- 0
+    while (i < length(models)) {
+      i <- i + 1
+      if (!is(models[[i]], "lm")) {
+        model.list <- models[[i]]
+        models <- c(models[i-1], model.list, models[(i+1):length(models)])
+        i <- 0
+      }
+    }
   }
 
   ## Initialize
@@ -54,7 +78,9 @@ makilabReg <- function(m1, ... ,excel_export=FALSE){
 
   ## Export to Excel
   if (excel_export) {
-    filename <- paste0("Data_", Sys.Date(), ".xlsx")
+    if (is.null(filename)) {
+      filename <- paste0("Data_", Sys.Date(), ".xlsx")
+    }
     if (file.exists(filename)) {
       wb <- openxlsx::loadWorkbook(filename)
       cur.sheetnames <- openxlsx::getSheetNames(filename)

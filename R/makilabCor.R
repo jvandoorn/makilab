@@ -4,6 +4,7 @@
 #' @param x A list of column names for the X axis.
 #' @param y A list of row names for the Y axis.
 #' @param excel_export A bool for whether or not you want an excel export.
+#' @param filename String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.
 #' @return The table of correlation values.
 #' @examples
 #' data(iris)
@@ -16,7 +17,7 @@
 #'            y = c("Petal.Width", "Petal.Length", "Species"),
 #'            excel_export = TRUE) # Exports to excel
 #' @export
-makilabCor <- function(df,x,y,excel_export=FALSE){
+makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL){
   if(!is.data.frame(df))
     stop("You must provide a data frame.")
   if(!is.character(x) | !is.character(y))
@@ -56,7 +57,9 @@ makilabCor <- function(df,x,y,excel_export=FALSE){
 
   ## Export to Excel
   if (excel_export) {
-    filename <- paste0("Data_", Sys.Date(), ".xlsx")
+    if (is.null(filename)) {
+      filename <- paste0("Data_", Sys.Date(), ".xlsx")
+    }
     if (file.exists(filename)) {
       wb <- openxlsx::loadWorkbook(filename)
       cur.sheetnames <- openxlsx::getSheetNames(filename)
