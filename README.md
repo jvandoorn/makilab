@@ -19,7 +19,7 @@ devtools::install_github("jvandoorn/makilab")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to use the Excel export functions:
 
 ``` r
 library(makilab)
@@ -31,8 +31,29 @@ makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width",
 
 ## Export a hierarchical LM model to Excel
 data(iris)
-m1 <- lm(Sepal.Length~Petal.Length, data = iris)
-m2 <- lm(Sepal.Length~Petal.Length+Petal.Width, data = iris)
-m3 <- lm(Sepal.Length~Petal.Length+Petal.Width+Species, data = iris)
-makilabReg(m1, m2, m3, excel_export = TRUE)
+m1 <- lm(Petal.Length~Petal.Width, data = iris)
+m2 <- lm(Petal.Length~Petal.Width+Sepal.Length, data = iris)
+m3 <- lm(Petal.Length~Petal.Width+Sepal.Length+Species, data = iris)
+
+makilabHLM(m1,m2,m3, excel_export = TRUE, filename = "makilabTest.xlsx")
+
+mlist <- list(m1,m2,m3)
+makilabHLM(mlist, excel_export = TRUE, filename = "makilabTest.xlsx")
+
+mlist <- list(m1,m2)
+makilabHLM(mlist,m3, excel_export = TRUE, filename = "makilabTest.xlsx")
+
+## Export a non-hierarchical set of LM models to Excel
+data(iris)
+m1 <- lm(Petal.Length~Petal.Width+Species, data = iris)
+m2 <- lm(Sepal.Length~Petal.Width+Sepal.Width, data = iris)
+m3 <- lm(Petal.Width~Petal.Length+Sepal.Length+Species, data = iris)
+
+makilabReg(m1,m2,m3, excel_export = TRUE, filename = "makilabTest.xlsx")
+
+mlist <- list(m1,m2,m3)
+makilabReg(mlist, excel_export = TRUE, filename = "makilabTest.xlsx")
+
+mlist <- list(m1,m2)
+makilabReg(mlist,m3, excel_export = TRUE, filename = "makilabTest.xlsx")
 ```

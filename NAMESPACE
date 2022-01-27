@@ -2,5 +2,6 @@
 
 export("%>%")
 export(makilabCor)
+export(makilabHLM)
 export(makilabReg)
 importFrom(magrittr,"%>%")

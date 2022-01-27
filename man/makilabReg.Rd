@@ -2,7 +2,7 @@
 % Please edit documentation in R/makilabReg.R
 \name{makilabReg}
 \alias{makilabReg}
-\title{Creates and exports a table of heirarchical LM models.}
+\title{Creates and exports a table of LM models with multiple DVs and IVs.}
 \usage{
 makilabReg(m1, ..., excel_export = FALSE, filename = NULL)
 }
@@ -19,13 +19,13 @@ makilabReg(m1, ..., excel_export = FALSE, filename = NULL)
 The table of model summaries and (optional) an excel sheet added to the file.
 }
 \description{
-Creates and exports a table of heirarchical LM models.
+Creates and exports a table of LM models with multiple DVs and IVs.
 }
 \examples{
 data(iris)
 library(makilab)
-m1 <- lm(Sepal.Length~Petal.Length, data = iris)
-m2 <- lm(Sepal.Length~Petal.Length+Petal.Width, data = iris)
-m3 <- lm(Sepal.Length~Petal.Length+Petal.Width+Species, data = iris)
-makilabReg(m1, m2, m3, excel_export = TRUE)
+m1 <- lm(Petal.Length~Petal.Width+Species, data = iris)
+m2 <- lm(Sepal.Length~Petal.Width+Sepal.Width, data = iris)
+m3 <- lm(Petal.Width~Petal.Length+Sepal.Length+Species, data = iris)
+makilabReg(m1, m2, m3, excel_export = TRUE, filename = "data.xlsx")
 }

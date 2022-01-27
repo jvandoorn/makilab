@@ -1,4 +1,4 @@
-#' Creates and exports a table of LM models with multiple DVs and IVs.
+#' Creates and exports a table of heirarchical LM models.
 #'
 #' @param m1 An object output from lm() or a list of such objects.
 #' @param ... More models from lm().
@@ -8,13 +8,13 @@
 #' @examples
 #' data(iris)
 #' library(makilab)
-#' m1 <- lm(Petal.Length~Petal.Width+Species, data = iris)
-#' m2 <- lm(Sepal.Length~Petal.Width+Sepal.Width, data = iris)
-#' m3 <- lm(Petal.Width~Petal.Length+Sepal.Length+Species, data = iris)
-#' makilabReg(m1, m2, m3, excel_export = TRUE, filename = "data.xlsx")
+#' m1 <- lm(Sepal.Length~Petal.Length, data = iris)
+#' m2 <- lm(Sepal.Length~Petal.Length+Petal.Width, data = iris)
+#' m3 <- lm(Sepal.Length~Petal.Length+Petal.Width+Species, data = iris)
+#' makilabHLM(m1, m2, m3, excel_export = TRUE, filename = "data.xlsx")
 #' @export
 
-makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
+makilabHLM <- function(m1, ... , excel_export=FALSE, filename=NULL){
   models <- list(m1, ...)
   listed <- FALSE
   if (length(models) < 1)
@@ -67,7 +67,7 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
       b[j] = summary(models[[i]])$coefficient[j+1,1]
       SE[j] = summary(models[[i]])$coefficient[j+1,2]
     }
-    new.rows <- data.frame(pred = yy, b=b, p=p, SE=SE, Model = vars[1])
+    new.rows <- data.frame(pred = yy, b=b, p=p, SE=SE, Model = paste("Model", i))
     lm.df <- rbind(lm.df, new.rows)
   }
 
@@ -89,24 +89,27 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
       wb <- openxlsx::loadWorkbook(filename)
       cur.sheetnames <- openxlsx::getSheetNames(filename)
       i <- 1
-      while (paste0("LM",i) %in% cur.sheetnames)
+      while (paste0("HLM",i) %in% cur.sheetnames)
         i = i + 1
-      sheetname <- paste0("LM",i)
+      sheetname <- paste0("HLM",i)
     }
     else {
       wb <- openxlsx::createWorkbook(title = paste0("Data_", Sys.Date()))
-      sheetname <- paste0("LM",1)
+      sheetname <- paste0("HLM",1)
     }
 
     openxlsx::addWorksheet(wb, sheetname)
     openxlsx::writeData(wb, sheetname, lm.tab, startRow = 10)
 
     header <- "Linear Regression (Heirarchical)"
-    subtitle <- "Notes..."
+    outcome <- paste0("Outcome = ", vars[1])
+    main.pred <- paste0("Predictor = ", vars[2])
     openxlsx::writeData(wb, sheetname, header, startRow = 1)
     openxlsx::mergeCells(wb, sheetname, cols = 1:10, rows = 1)
-    openxlsx::writeData(wb, sheetname, subtitle, startRow = 2)
+    openxlsx::writeData(wb, sheetname, outcome, startRow = 2)
     openxlsx::mergeCells(wb, sheetname, cols = 1:10, rows = 2)
+    openxlsx::writeData(wb, sheetname, main.pred, startRow = 3)
+    openxlsx::mergeCells(wb, sheetname, cols = 1:10, rows = 3)
 
     ## Conditional Formatting
     sigStyle <- openxlsx::createStyle(bgFill = "#f2dcdb")
@@ -143,6 +146,9 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
        if (!(l %% 3 == 0)) next
        openxlsx::mergeCells(wb, sheetname, cols = (l-1):(l+1), rows = 9)
     }
+
+    ## List models
+    openxlsx::writeData(wb, sheetname, "Covariates:", startRow = 5, colNames = FALSE)
 
     ## Formatting
     openxlsx::writeData(wb, sheetname, t(row1), startRow = 9, colNames = FALSE)
