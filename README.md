@@ -21,15 +21,19 @@ devtools::install_github("jvandoorn/makilab")
 
 This is a basic example which shows you how to use the Excel export functions:
 
+### Make a Pearson Correlation
 ``` r
 library(makilab)
 
-## Make a Pearson Correlation
 data(iris)
-makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species")) # No export
-makilabCor(df = iris, x = c("Sepal.Width", "Sepal.Length"), y = c("Petal.Width", "Petal.Length", "Species"), excel_export = TRUE) # Exports to excel in your working directory called Data_todays date.xlsx
+x = c("Sepal.Width", "Sepal.Length")
+y = c("Petal.Width", "Petal.Length", "Species")
+makilabCor(df = iris, x, y) # No export
+makilabCor(df = iris, x, y, excel_export = TRUE) # Exports to excel
+```
+### Export a hierarchical LM model to Excel
 
-## Export a hierarchical LM model to Excel
+``` r
 data(iris)
 m1 <- lm(Petal.Length~Petal.Width, data = iris)
 m2 <- lm(Petal.Length~Petal.Width+Sepal.Length, data = iris)
@@ -42,8 +46,10 @@ makilabHLM(mlist, excel_export = TRUE, filename = "makilabTest.xlsx")
 
 mlist <- list(m1,m2)
 makilabHLM(mlist,m3, excel_export = TRUE, filename = "makilabTest.xlsx")
+```
 
-## Export a non-hierarchical set of LM models to Excel
+### Export a non-hierarchical set of LM models to Excel
+``` r
 data(iris)
 m1 <- lm(Petal.Length~Petal.Width+Species, data = iris)
 m2 <- lm(Sepal.Length~Petal.Width+Sepal.Width, data = iris)
