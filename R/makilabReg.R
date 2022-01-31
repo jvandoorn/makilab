@@ -76,7 +76,7 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
   lm.tab <- lm.df %>%
     tidyr::pivot_wider(names_from = Model,
                 values_from = c(b,p,SE),
-                names_glue = "{Model}_{.value}") %>%
+                names_glue = "{Model}____{.value}") %>%
     dplyr::select(pred, order(colnames(.)))
 
 
@@ -101,7 +101,7 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
     openxlsx::addWorksheet(wb, sheetname)
     openxlsx::writeData(wb, sheetname, lm.tab, startRow = 10)
 
-    header <- "Linear Regression (Heirarchical)"
+    header <- "Linear Regressions"
     subtitle <- "Notes..."
     openxlsx::writeData(wb, sheetname, header, startRow = 1)
     openxlsx::mergeCells(wb, sheetname, cols = 1:10, rows = 1)
@@ -135,7 +135,7 @@ makilabReg <- function(m1, ... , excel_export=FALSE, filename=NULL){
 
     ## String manipulation
     var.names <- as.list(openxlsx::read.xlsx(wb, sheetname, colNames = FALSE, rows = 10))
-    var.split <- stringr::str_split(var.names, "_")
+    var.split <- stringr::str_split(var.names, "____")
     row2 <- sapply(var.split, `[`, 2)
     row1 <- sapply(var.split, `[`, 1)
     openxlsx::writeData(wb, sheetname, t(row2), startRow = 10, colNames = FALSE)

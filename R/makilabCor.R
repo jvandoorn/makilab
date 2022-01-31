@@ -51,7 +51,7 @@ makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL){
   corr.tab <- corr.df %>%
     tidyr::pivot_wider(names_from = X,
                 values_from = c(corr,p),
-                names_glue = "{X}_{.value}") %>%
+                names_glue = "{X}____{.value}") %>%
     dplyr::select(Y, order(colnames(.)))
 
 
@@ -103,7 +103,7 @@ makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL){
 
     ## String manipulation
     var.names <- as.list(openxlsx::read.xlsx(wb, sheetname, colNames = FALSE, rows = 5))
-    var.split <- stringr::str_split(var.names, "_")
+    var.split <- stringr::str_split(var.names, "____")
     row2 <- sapply(var.split, `[`, 2)
     row1 <- sapply(var.split, `[`, 1)
     openxlsx::writeData(wb, sheetname, t(row2), startRow = 5, colNames = FALSE)
