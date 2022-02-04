@@ -4,7 +4,7 @@
 \alias{makilabCor}
 \title{Creates and exports a correlation matrix in a style consistent with the Maki Lab.}
 \usage{
-makilabCor(df, x, y, excel_export = FALSE, filename = NULL)
+makilabCor(df, x, y, excel_export = FALSE, filename = NULL, sheetname = NULL)
 }
 \arguments{
 \item{df}{A data frame containing the variables you want to correlate.}
@@ -16,6 +16,8 @@ makilabCor(df, x, y, excel_export = FALSE, filename = NULL)
 \item{excel_export}{A bool for whether or not you want an excel export.}
 
 \item{filename}{String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.}
+
+\item{sheetname}{A string to be used as the sheet name. Defaults to 'Corri' where i is the number of correlation sheets in the file.}
 }
 \value{
 The table of correlation values.

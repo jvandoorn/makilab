@@ -4,6 +4,7 @@
 #' @param ... More models from lm().
 #' @param excel_export A bool for whether not you want an excel export.
 #' @param filename String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.
+#' @param sheetname String to use as the sheet name. Defaults to HLMi, where i is the number of HLMs in the file.
 #' @return The table of model summaries and (optional) an excel sheet added to the file.
 #' @examples
 #' data(iris)
@@ -14,7 +15,7 @@
 #' makilabHLM(m1, m2, m3, excel_export = TRUE, filename = "data.xlsx")
 #' @export
 
-makilabHLM <- function(m1, ... , excel_export=FALSE, filename=NULL){
+makilabHLM <- function(m1, ... , excel_export=FALSE, filename=NULL, sheetname = NULL){
   models <- list(m1, ...)
   listed <- FALSE
   if (length(models) < 1)
@@ -87,15 +88,19 @@ makilabHLM <- function(m1, ... , excel_export=FALSE, filename=NULL){
     }
     if (file.exists(filename)) {
       wb <- openxlsx::loadWorkbook(filename)
-      cur.sheetnames <- openxlsx::getSheetNames(filename)
-      i <- 1
-      while (paste0("HLM",i) %in% cur.sheetnames)
-        i = i + 1
-      sheetname <- paste0("HLM",i)
+      if (is.null(sheetname)) {
+        cur.sheetnames <- openxlsx::getSheetNames(filename)
+        i <- 1
+        while (paste0("HLM",i) %in% cur.sheetnames)
+          i = i + 1
+        sheetname <- paste0("HLM", i)
+      }
     }
     else {
       wb <- openxlsx::createWorkbook(title = paste0("Data_", Sys.Date()))
-      sheetname <- paste0("HLM",1)
+      if (is.null(sheetname)) {
+        sheetname <- paste0("HLM", 1)
+      }
     }
 
     openxlsx::addWorksheet(wb, sheetname)

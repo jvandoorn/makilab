@@ -5,6 +5,7 @@
 #' @param y A list of row names for the Y axis.
 #' @param excel_export A bool for whether or not you want an excel export.
 #' @param filename String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.
+#' @param sheetname A string to be used as the sheet name. Defaults to 'Corri' where i is the number of correlation sheets in the file.
 #' @return The table of correlation values.
 #' @examples
 #' data(iris)
@@ -17,7 +18,7 @@
 #'            y = c("Petal.Width", "Petal.Length", "Species"),
 #'            excel_export = TRUE) # Exports to excel
 #' @export
-makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL){
+makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL,sheetname=NULL){
   if(!is.data.frame(df))
     stop("You must provide a data frame.")
   if(!is.character(x) | !is.character(y))
@@ -62,15 +63,19 @@ makilabCor <- function(df,x,y,excel_export=FALSE,filename=NULL){
     }
     if (file.exists(filename)) {
       wb <- openxlsx::loadWorkbook(filename)
-      cur.sheetnames <- openxlsx::getSheetNames(filename)
-      i <- 1
-      while (paste0("Corr",i) %in% cur.sheetnames)
-        i = i + 1
-      sheetname <- paste0("Corr",i)
+      if (is.null(sheetname)){
+        cur.sheetnames <- openxlsx::getSheetNames(filename)
+        i <- 1
+        while (paste0("Corr",i) %in% cur.sheetnames)
+          i = i + 1
+        sheetname <- paste0("Corr",i)
+      }
     }
     else {
       wb <- openxlsx::createWorkbook(title = paste0("Data_", Sys.Date()))
-      sheetname <- paste0("Corr",1)
+      if (is.null(sheetname)) {
+        sheetname <- paste0("Corr",1)
+      }
     }
 
     openxlsx::addWorksheet(wb, sheetname)

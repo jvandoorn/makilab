@@ -4,7 +4,7 @@
 \alias{makilabReg}
 \title{Creates and exports a table of LM models with multiple DVs and IVs.}
 \usage{
-makilabReg(m1, ..., excel_export = FALSE, filename = NULL)
+makilabReg(m1, ..., excel_export = FALSE, filename = NULL, sheetname = NULL)
 }
 \arguments{
 \item{m1}{An object output from lm() or a list of such objects.}
@@ -14,6 +14,8 @@ makilabReg(m1, ..., excel_export = FALSE, filename = NULL)
 \item{excel_export}{A bool for whether not you want an excel export.}
 
 \item{filename}{String of the filename to export to. Defaults to 'Data_YYYY-MM-DD.xlsx' where YYYY-MM-DD is today's date.}
+
+\item{sheetname}{String to be used as the sheet name. Defaults to 'LMi' where i is the number of LMs in the file.}
 }
 \value{
 The table of model summaries and (optional) an excel sheet added to the file.
