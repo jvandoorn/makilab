@@ -134,11 +134,11 @@ makilabHLM <- function(m1, ... , excel_export=FALSE, filename=NULL, sheetname = 
 
       ## Significant
       openxlsx::conditionalFormatting(wb, sheetname, cols = k-1, rows = 11:(nrow(lm.tab)+10),
-                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.1,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
+                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.05,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
       openxlsx::conditionalFormatting(wb, sheetname, cols = k, rows = 11:(nrow(lm.tab)+10),
-                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.1,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
+                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.05,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
       openxlsx::conditionalFormatting(wb, sheetname, cols = k+1, rows = 11:(nrow(lm.tab)+10),
-                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.1,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
+                            rule = paste0("AND(",openxlsx::int2col(k),"11<=0.05,",openxlsx::int2col(k),"11>0)"), style = sigStyle)
     }
 
     ## String manipulation
