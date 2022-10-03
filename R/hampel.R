@@ -13,7 +13,8 @@
 #' @examples
 #' data(iris)
 #' library(makilab)
-#' hampal(Sepal.Length)
+#' iris$Sepal.Length[20] <- 99 # creating an outlier
+#' hampal(iris$Sepal.Length)
 #' @export
 hampel <- function(x, n = 3, k = 1.4826, replace = FALSE) {
   y <- x # Output vector

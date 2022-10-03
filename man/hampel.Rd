@@ -27,5 +27,6 @@ median. Typically this is applied as a sliding window.
 \examples{
 data(iris)
 library(makilab)
-hampal(Sepal.Length)
+iris$Sepal.Length[20] <- 99 # creating an outlier
+hampal(iris$Sepal.Length)
 }
